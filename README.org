@@ -1,0 +1,151 @@
+
+* Overview
+
+This repository contains the replication scripts for:
+
+- McCabe, S., Ferrari, D., Green J., Lazer, D., Esterling, K. (2024) Twitter Deplatforming: Limiting Misinformation after the January 6 Insurrection. /Nature/ (forthcoming)
+
+
+Bibtex citation:
+
+#+BEGIN_SRC bibtex
+
+@article{mccabe2024twitter,
+    author = {Stefan D. McCabe, Diogo Ferrari, Jon Green, David M.J. Lazer, Kevin M. Esterling},
+    title = {Twitter Deplatforming: Limiting Misinformation after the January 6 Insurrection},
+    year={2024},
+    journal = {Nature},
+    volume = {forthcoming},
+    issue = {},
+    doi = {},
+    url = {},
+}
+
+#+END_SRC
+
+The files include:
+
+1. The scripts used to generate the aggregated data from the raw user-day data.
+2. The scripts used to replicate the analyses and create the tables and figures in the manuscript.
+3. Aggregated data sets used in the analyses.
+
+
+
+* System Requirements
+** Hardware
+
+The analyses in the manuscript were produced using:
+- Intel® Core™ i7-10610U × 8
+- 48 GiB RAM
+
+** Software
+
+Original settings used to produce the manuscript analyses:
+
+#+BEGIN_SRC R :exports code :results none
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 23.10
+platform       x86_64-pc-linux-gnu         
+arch           x86_64                      
+os             linux-gnu
+R version 4.3.1 (2023-06-16)
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.11.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.11.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8       
+ [4] LC_COLLATE=en_US.UTF-8     LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                  LC_ADDRESS=C              
+[10] LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: America/Los_Angeles
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.2    forcats_1.0.0      dplyr_1.1.4        purrr_1.0.2        readr_2.1.4       
+ [6] tidyr_1.3.0        tibble_3.2.1       tidyverse_2.0.0    writexl_1.4.2      stringr_1.5.1     
+[11] rdrobust_2.2       modelsummary_1.4.0 patchwork_1.2.0    lmtest_0.9-40      zoo_1.8-12        
+[16] furrr_0.3.1        future_1.32.0      ComplexUpset_1.3.3 sandwich_3.0-2     gridExtra_2.3     
+[21] ggh4x_0.2.5        ggrepel_0.9.3      scales_1.2.1       psych_2.3.9        did_2.1.2         
+[26] magrittr_2.0.3     glue_1.6.2         ggdark_0.2.1       gtsummary_1.7.1    ggplot2_3.4.2     
+[31] RColorBrewer_1.1-3
+
+loaded via a namespace (and not attached):
+  [1] splines_4.3.1           later_1.3.1             datawizard_0.9.0        lifecycle_1.0.4        
+  [5] rstatix_0.7.2           rprojroot_2.0.3         globals_0.16.2          lattice_0.21-8         
+  [9] vroom_1.6.5             MASS_7.3-60             insight_0.19.7          backports_1.4.1        
+ [13] rmarkdown_2.21          httpuv_1.6.11           askpass_1.1             multcomp_1.4-23        
+ [17] abind_1.4-5             rvest_1.0.3             TH.data_1.1-2           gdtools_0.3.3          
+ [21] listenv_0.9.0           crul_1.3                performance_0.10.8      parallelly_1.35.0      
+ [25] svglite_2.1.1           codetools_0.2-19        DT_0.27                 xml2_1.3.4             
+ [29] tidyselect_1.2.0        httpcode_0.3.0          farver_2.1.1            effectsize_0.8.6       
+ [33] webshot_0.5.4           broom.helpers_1.13.0    jsonlite_1.8.4          ellipsis_0.3.2         
+ [37] survival_3.5-5          emmeans_1.8.6           systemfonts_1.0.4       tools_4.3.1            
+ [41] Rcpp_1.0.10             mnormt_2.1.1            xfun_0.39               mgcv_1.8-42            
+ [45] withr_2.5.2             fastmap_1.1.1           fansi_1.0.5             openssl_2.0.6          
+ [49] digest_0.6.31           timechange_0.2.0        R6_2.5.1                mime_0.12              
+ [53] estimability_1.4.1      textshaping_0.3.6       colorspace_2.1-0        utf8_1.2.4             
+ [57] generics_0.1.3          fontLiberation_0.1.0    data.table_1.14.8       httr_1.4.6             
+ [61] htmlwidgets_1.6.2       parameters_0.21.3       pkgconfig_2.0.3         gtable_0.3.3           
+ [65] htmltools_0.5.5         fontBitstreamVera_0.1.1 carData_3.0-5           kableExtra_1.3.4       
+ [69] BMisc_1.4.5             knitr_1.42              rstudioapi_0.14         tzdb_0.4.0             
+ [73] coda_0.19-4             checkmate_2.2.0         nlme_3.1-162            curl_5.0.0             
+ [77] parallel_4.3.1          pillar_1.9.0            grid_4.3.1              vctrs_0.6.5            
+ [81] promises_1.2.0.1        ggpubr_0.6.0            car_3.1-2               xtable_1.8-4           
+ [85] evaluate_0.21           mvtnorm_1.1-3           cli_3.6.1               compiler_4.3.1         
+ [89] rlang_1.1.2             crayon_1.5.2            future.apply_1.10.0     ggsignif_0.6.4         
+ [93] labeling_0.4.2          stringi_1.8.2           viridisLite_0.4.2       assertthat_0.2.1       
+ [97] tables_0.9.17           munsell_0.5.0           bayestestR_0.13.1       fontquiver_0.2.1       
+[101] Matrix_1.6-4            hms_1.1.3               bit64_4.0.5             gfonts_0.2.0           
+[105] shiny_1.7.4             gt_0.9.0                broom_1.0.5             huxtable_5.5.2         
+[109] bit_4.0.5              
+
+
+#+END_SRC                   
+
+
+** Non-standard software and hardware
+
+No non-standard software or hardware was used.
+
+* Data Privacy Statement
+
+This repository only provides the daily-level aggregated data. The tweet-level data, and specific user demographics, cannot be publicly shared due to privacy concerns arising from matching data to administrative records, data use agreements, and platforms' terms of service. Our replication materials include the code used to produce the aggregate data from the tweet-level data, and the tweet-level data can be accessed after signing a data-use agreement; contact author D.L. with access requests.
+
+* Instructions for replication
+
+1. See Data Privacy Statement in this document
+2. Download this repository to your local computer
+
+
+#+BEGIN_SRC ascii :exports none
+.
+├── data
+│   ├── raw                          <- folder with raw data
+│   │                                   (not provided; see privacy statement)
+│   └── final                        <- folder with data used in the analyses 
+│                                       (only aggregated data; see privacy statement)
+├── man
+│   └── tables-and-figures           <- folder to save the tables and figures
+├── src
+│   ├── recoding                     <- scripts with code to prepare data for the analyses
+│   └── model                        <- scripts to reproduce the analyses, tables, and figures
+└── README.org                       <- this file
+#+END_SRC
+
+3. [@3] Open the terminal
+4. From the terminal window, go to the folder =/src/model/= and run:
+
+   #+BEGIN_SRC shell
+R CMD BATCH --no-save model.R &
+   #+END_SRC
+
+
+When the script finishes, it will save a file named =model.Rout= with the R log file in the folder =/src/model/=. It will also create all tables and figures within the folder =/man/tables-and-figures/.=
+
+The file 'codebook.pdf' contains the description of the variables.
