@@ -121,6 +121,12 @@ This repository only provides the daily-level aggregated data. The tweet-level d
 
 1. See Data Privacy Statement in this document
 2. Download this repository to your local computer
+3. Open the terminal
+4. From the terminal window, go to the folder =/src/model/= and run:
+
+   #+BEGIN_SRC shell
+R CMD BATCH --no-save model.R &
+   #+END_SRC
 
 
 #+BEGIN_SRC ascii :exports none
@@ -137,14 +143,6 @@ This repository only provides the daily-level aggregated data. The tweet-level d
 │   └── model                        <- scripts to reproduce the analyses, tables, and figures
 └── README.org                       <- this file
 #+END_SRC
-
-3. [@3] Open the terminal
-4. From the terminal window, go to the folder =/src/model/= and run:
-
-   #+BEGIN_SRC shell
-R CMD BATCH --no-save model.R &
-   #+END_SRC
-
 
 When the script finishes, it will save a file named =model.Rout= with the R log file in the folder =/src/model/=. It will also create all tables and figures within the folder =/man/tables-and-figures/.=
 
